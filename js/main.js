@@ -1,6 +1,9 @@
 'use strict';
 
-var AD_AMOUNT = 8;
+var ADS_AMOUNT = 8;
+
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
 
 var typesOfLodging = [
   'palace',
@@ -66,6 +69,13 @@ var lodgingPrices = [
     price: 10000,
   }
 ];
+
+var Pin = {
+  HEIGHT: 40,
+  WIDTH: 40,
+};
+
+var offerTitles = ['a', 'b', 'c', 'd', 's', 'l', 'm', 'z'];
 
 var rooms = [1, 2, 3, 100];
 
@@ -139,6 +149,7 @@ var makeAd = function (index) {
   var ad = {
     author: getImageSource(index),
     offer: {
+      title: offerTitles[index],
       address: location.x,
       price: getRandomInteger(Price.MIN, Price.MAX),
       type: getRendomItemOfArray(typesOfLodging),
@@ -157,4 +168,31 @@ var makeAd = function (index) {
   };
 
   return ad;
+};
+
+var createAds = function (amountOfAds) {
+  var ads = [];
+  for (var i = 0; i < amountOfAds; i++) {
+    ads.push(makeAd(i));
+  }
+  return ads;
+};
+
+var ads = createAds(ADS_AMOUNT);
+var mapPin = document.querySelector('.pin').content.querySelector('map__pin');
+
+var makePin = function (ad) {
+  var btn = document.createElement('button');
+  var image = document.createElement('img');
+
+  btn.classList.add('map__pin');
+  btn.style.Left = (ad.location.x - Pin.WIDTH) / 2 + 'px';
+  btn.style.Top = (ad.location.y - Pin.HEIGHT) / 2 + 'px';
+
+  image.width = 40;
+  image.height = 40;
+  image.draggable = false;
+  image.alt = ad.offer.title;
+
+  btn.append(image);
 };
