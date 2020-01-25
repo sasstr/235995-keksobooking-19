@@ -2,7 +2,7 @@
 
 var AD_AMOUNT = 8;
 
-var typesOfLodging= [
+var typesOfLodging = [
   'palace',
   'flat',
   'house',
@@ -43,10 +43,10 @@ var Price = {
   MAX: 10000
 };
 
-var Guests = {
+var Guest = {
   MIN: 1,
   MAX: 7
-}
+};
 
 var lodgingPrices = [
   {
@@ -65,7 +65,7 @@ var lodgingPrices = [
     type: 'Дворец',
     price: 10000,
   }
-]
+];
 
 var rooms = [1, 2, 3, 100];
 
@@ -143,7 +143,7 @@ var makeAd = function (index) {
       price: getRandomInteger(Price.MIN, Price.MAX),
       type: getRendomItemOfArray(typesOfLodging),
       rooms: getRendomItemOfArray(rooms),
-      guests: getRandomInteger(Guests.MIN, Guests.MAX),
+      guests: getRandomInteger(Guest.MIN, Guest.MAX),
       checkin: getRendomItemOfArray(times),
       checkout: getRendomItemOfArray(times),
       features: getRandomLengthArray(shuffleElemetsOfArray(features)),
