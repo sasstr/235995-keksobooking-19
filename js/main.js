@@ -193,6 +193,7 @@ var makePin = function (ad) {
   image.height = 40;
   image.draggable = false;
   image.alt = ad.offer.title;
+  image.src = ad.author.avatar;
 
   btn.append(image);
 };
