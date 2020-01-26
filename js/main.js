@@ -1,6 +1,8 @@
 'use strict';
 
 var ADS_AMOUNT = 8;
+var OFFER_TITLES = ['a', 'b', 'c', 'd', 's', 'l', 'm', 'z'];
+var ROOMS = [1, 2, 3, 100];
 
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
@@ -55,10 +57,6 @@ var Pin = {
   HEIGHT: 40,
   WIDTH: 40,
 };
-
-var offerTitles = ['a', 'b', 'c', 'd', 's', 'l', 'm', 'z'];
-
-var rooms = [1, 2, 3, 100];
 
 /**
  * Функция возращает случайное целое число между min и max - включительно
@@ -134,11 +132,11 @@ var makeAd = function (index) {
   var ad = {
     author: getImageSource(index),
     offer: {
-      title: offerTitles[index],
+      title: OFFER_TITLES[index],
       address: location.x,
       price: getRandomInteger(Price.MIN, Price.MAX),
       type: getRendomItemOfArray(typesOfLodging),
-      rooms: getRendomItemOfArray(rooms),
+      rooms: getRendomItemOfArray(ROOMS),
       guests: getRandomInteger(Guest.MIN, Guest.MAX),
       checkin: getRendomItemOfArray(times),
       checkout: getRendomItemOfArray(times),
