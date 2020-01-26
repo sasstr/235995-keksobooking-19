@@ -3,22 +3,20 @@
 var ADS_AMOUNT = 8;
 var OFFER_TITLES = ['a', 'b', 'c', 'd', 's', 'l', 'm', 'z'];
 var ROOMS = [1, 2, 3, 100];
-
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
-var typesOfLodging = [
+var TYPES_OF_LODGING = [
   'palace',
   'flat',
   'house',
   'bungalo'
 ];
-var times = [
+
+var TIMES = [
   '12:00',
   '13:00',
   '14:00'
 ];
-var features = [
+
+var FEATURES = [
   'wifi',
   'dishwasher',
   'parking',
@@ -27,7 +25,7 @@ var features = [
   'conditioner'
 ];
 
-var photos = [
+var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
@@ -57,6 +55,9 @@ var Pin = {
   HEIGHT: 40,
   WIDTH: 40,
 };
+
+var map = document.querySelector('.map');
+map.classList.remove('map--faded');
 
 /**
  * Функция возращает случайное целое число между min и max - включительно
@@ -105,7 +106,6 @@ var shuffleElemetsOfArray = function (array) {
   return cloneArray;
 };
 
-
 /** Функция создает объект с ссылкой на картинку аватарки
  *
  * @param {number} index
@@ -135,14 +135,14 @@ var makeAd = function (index) {
       title: OFFER_TITLES[index],
       address: location.x,
       price: getRandomInteger(Price.MIN, Price.MAX),
-      type: getRendomItemOfArray(typesOfLodging),
+      type: getRendomItemOfArray(TYPES_OF_LODGING),
       rooms: getRendomItemOfArray(ROOMS),
       guests: getRandomInteger(Guest.MIN, Guest.MAX),
-      checkin: getRendomItemOfArray(times),
-      checkout: getRendomItemOfArray(times),
-      features: getRandomLengthArray(shuffleElemetsOfArray(features)),
+      checkin: getRendomItemOfArray(TIMES),
+      checkout: getRendomItemOfArray(TIMES),
+      features: getRandomLengthArray(shuffleElemetsOfArray(FEATURES)),
       description: '',
-      photos: getRandomLengthArray(shuffleElemetsOfArray(photos)),
+      photos: getRandomLengthArray(shuffleElemetsOfArray(PHOTOS)),
     },
     location: {
       x: location.x,
