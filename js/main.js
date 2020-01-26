@@ -51,25 +51,6 @@ var Guest = {
   MAX: 7
 };
 
-var lodgingPrices = [
-  {
-    type: 'Бунгало',
-    price: 0,
-  },
-  {
-    type: 'Квартира',
-    price: 1000,
-  },
-  {
-    type: 'Дом',
-    price: 5000,
-  },
-  {
-    type: 'Дворец',
-    price: 10000,
-  }
-];
-
 var Pin = {
   HEIGHT: 40,
   WIDTH: 40,
@@ -92,8 +73,8 @@ var getRandomInteger = function (min, max) {
 //  Функция возращает случайный элемент массива
 /**
  *
- * @param {array} array
- * @return {*}
+ * @param {array} array массив
+ * @return {any} возращает случайный элемент массива
  */
 var getRendomItemOfArray = function (array) {
   return array[getRandomInteger(0, array.length)];
@@ -101,18 +82,17 @@ var getRendomItemOfArray = function (array) {
 
 /** Функция возращает случайной длины массив от исходного массива
  *
- * @param {array} array
- * @return {array}
+ * @param {array} array массив
+ * @return {array} возращает случайной длины массив от исходного массива
  */
 var getRandomLengthArray = function (array) {
   return array.slice(0, getRandomInteger(1, array.length));
 };
 
-//  Функция перемешивает элементы массива
-/**
+/** Функция перемешивает элементы массива
  *
- * @param {array} array
- * @return {array}
+ * @param {array} array массив
+ * @return {array} клонированный массив с перемешанными элементами
  */
 var shuffleElemetsOfArray = function (array) {
   var cloneArray = array.slice();
@@ -128,18 +108,23 @@ var shuffleElemetsOfArray = function (array) {
 };
 
 
-/** Функция
+/** Функция создает объект с ссылкой на картинку аватарки
  *
  * @param {number} index
- * @return {object}
+ * @return {object} создает объект с ссылкой на картинку аватарки
  */
 var getImageSource = function (index) {
-  var src = index <= 9 ? 'img/avatars/user0' + index + '.png' : 'img/avatars/user' + index + '.png';
+  var src = index + 1 <= 9 ? 'img/avatars/user0' + (index + 1) + '.png' : 'img/avatars/user' + index + '.png';
   return {
     avatar: src
   };
 };
 
+/** Функция создает одно объявление
+ *
+ * @param {number} index
+ * @return {object} Объект с данными одного объявления
+ */
 var makeAd = function (index) {
   var location = {
     x: getRandomInteger(LocationX.MIN, LocationX.MAX),
@@ -170,6 +155,11 @@ var makeAd = function (index) {
   return ad;
 };
 
+/** Функция возращает массив объявлений
+ *
+ * @param {number} amountOfAds кол-во объявлений
+ * @return {array} возращает массив объявлений
+ */
 var createAds = function (amountOfAds) {
   var ads = [];
   for (var i = 0; i < amountOfAds; i++) {
@@ -177,17 +167,21 @@ var createAds = function (amountOfAds) {
   }
   return ads;
 };
-
+// создаем массив объявлений
 var ads = createAds(ADS_AMOUNT);
-var mapPin = document.querySelector('.pin').content.querySelector('map__pin');
 
+/** Функция создает элемент Пина объявления - кнопку
+ *
+ * @param {object} ad объект одного объявления
+ * @return {element} создает элемент Пина объявления - кнопку
+ */
 var makePin = function (ad) {
   var btn = document.createElement('button');
   var image = document.createElement('img');
 
   btn.classList.add('map__pin');
-  btn.style.Left = (ad.location.x - Pin.WIDTH) / 2 + 'px';
-  btn.style.Top = (ad.location.y - Pin.HEIGHT) / 2 + 'px';
+  btn.style.left = (ad.location.x - Pin.WIDTH) / 2 + 'px';
+  btn.style.top = (ad.location.y - Pin.HEIGHT) / 2 + 'px';
 
   image.width = 40;
   image.height = 40;
@@ -196,4 +190,21 @@ var makePin = function (ad) {
   image.src = ad.author.avatar;
 
   btn.append(image);
+
+  return btn;
 };
+
+/** Функция возращает готовый фрагмент объявлений для вставки в DOM
+ * @return {element} возращает готовый фрагмент объявлений для вставки в DOM
+ */
+var renderPins = function () {
+  var pinsFragment = document.createDocumentFragment();
+  for (var i = 0; i < ADS_AMOUNT; i++) {
+    pinsFragment.appendChild(makePin(ads[i]));
+  }
+  return pinsFragment;
+};
+
+var mapPins = document.querySelector('.map__pins');
+
+mapPins.appendChild(renderPins(ads));
