@@ -31,9 +31,11 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
+var map = document.querySelector('.map');
+
 var LocationX = {
-  MIN: 250,
-  MAX: 1000
+  MIN: 25,
+  MAX: map.offsetWidth - 25
 };
 
 var LocationY = {
@@ -52,11 +54,11 @@ var Guest = {
 };
 
 var Pin = {
-  HEIGHT: 40,
-  WIDTH: 40,
+  HEIGHT: 70,
+  WIDTH: 50,
 };
 
-var map = document.querySelector('.map');
+
 map.classList.remove('map--faded');
 
 /**
@@ -109,13 +111,10 @@ var shuffleElemetsOfArray = function (array) {
 /** Функция создает объект с ссылкой на картинку аватарки
  *
  * @param {number} index
- * @return {object} создает объект с ссылкой на картинку аватарки
+ * @return {string} создает строку с ссылкой на картинку аватарки
  */
 var getImageSource = function (index) {
-  var src = index + 1 <= 9 ? 'img/avatars/user0' + (index + 1) + '.png' : 'img/avatars/user' + index + '.png';
-  return {
-    avatar: src
-  };
+  return index + 1 <= 9 ? 'img/avatars/user0' + (index + 1) + '.png' : 'img/avatars/user' + index + '.png';
 };
 
 /** Функция создает одно объявление
@@ -124,13 +123,10 @@ var getImageSource = function (index) {
  * @return {object} Объект с данными одного объявления
  */
 var makeAd = function (index) {
-  var location = {
-    x: getRandomInteger(LocationX.MIN, LocationX.MAX),
-    y: getRandomInteger(LocationY.MIN, LocationY.MAX),
-  };
-
   var ad = {
-    author: getImageSource(index),
+    author: {
+      avatar: getImageSource(index)
+    },
     offer: {
       title: OFFER_TITLES[index],
       address: location.x,
@@ -145,8 +141,8 @@ var makeAd = function (index) {
       photos: getRandomLengthArray(shuffleElemetsOfArray(PHOTOS)),
     },
     location: {
-      x: location.x,
-      y: location.y,
+      x: getRandomInteger(LocationX.MIN, LocationX.MAX),
+      y: getRandomInteger(LocationY.MIN, LocationY.MAX),
     },
   };
 
@@ -174,12 +170,12 @@ var ads = createAds(ADS_AMOUNT);
  * @return {element} создает элемент Пина объявления - кнопку
  */
 var makePin = function (ad) {
-  var btn = document.createElement('button');
+  var button = document.createElement('button');
   var image = document.createElement('img');
 
-  btn.classList.add('map__pin');
-  btn.style.left = (ad.location.x - Pin.WIDTH) / 2 + 'px';
-  btn.style.top = (ad.location.y - Pin.HEIGHT) / 2 + 'px';
+  button.classList.add('map__pin');
+  button.style.left = (ad.location.x - Pin.WIDTH / 2) + 'px';
+  button.style.top = (ad.location.y - Pin.HEIGHT) + 'px';
 
   image.width = 40;
   image.height = 40;
@@ -187,22 +183,26 @@ var makePin = function (ad) {
   image.alt = ad.offer.title;
   image.src = ad.author.avatar;
 
-  btn.append(image);
+  button.append(image);
 
-  return btn;
+  return button;
 };
 
 /** Функция возращает готовый фрагмент объявлений для вставки в DOM
+ * @param {array} adsList массив со всеми объявлениями
+ * @param {number} adsAmoutn кол-во объявлений
  * @return {element} возращает готовый фрагмент объявлений для вставки в DOM
  */
-var renderPins = function () {
+var renderPins = function (adsList, adsAmoutn) {
   var pinsFragment = document.createDocumentFragment();
-  for (var i = 0; i < ADS_AMOUNT; i++) {
-    pinsFragment.appendChild(makePin(ads[i]));
+
+  for (var i = 0; i < adsAmoutn; i++) {
+    pinsFragment.appendChild(makePin(adsList[i]));
   }
+
   return pinsFragment;
 };
 
 var mapPins = document.querySelector('.map__pins');
 
-mapPins.appendChild(renderPins(ads));
+mapPins.appendChild(renderPins(ads, ADS_AMOUNT));
