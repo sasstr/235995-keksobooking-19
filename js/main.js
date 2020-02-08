@@ -123,6 +123,10 @@ var getImageSource = function (index) {
  * @return {object} Объект с данными одного объявления
  */
 var makeAd = function (index) {
+  var location = {
+    x: getRandomInteger(LocationX.MIN, LocationX.MAX),
+    y: getRandomInteger(LocationY.MIN, LocationY.MAX),
+  };
   var ad = {
     author: {
       avatar: getImageSource(index)
@@ -140,10 +144,7 @@ var makeAd = function (index) {
       description: '',
       photos: getRandomLengthArray(shuffleElemetsOfArray(PHOTOS)),
     },
-    location: {
-      x: getRandomInteger(LocationX.MIN, LocationX.MAX),
-      y: getRandomInteger(LocationY.MIN, LocationY.MAX),
-    },
+    location: location,
   };
 
   return ad;
@@ -190,13 +191,12 @@ var makePin = function (ad) {
 
 /** Функция возращает готовый фрагмент объявлений для вставки в DOM
  * @param {array} adsList массив со всеми объявлениями
- * @param {number} adsAmoutn кол-во объявлений
  * @return {element} возращает готовый фрагмент объявлений для вставки в DOM
  */
-var renderPins = function (adsList, adsAmoutn) {
+var renderPins = function (adsList) {
   var pinsFragment = document.createDocumentFragment();
 
-  for (var i = 0; i < adsAmoutn; i++) {
+  for (var i = 0; i < adsList.length; i++) {
     pinsFragment.appendChild(makePin(adsList[i]));
   }
 
@@ -205,4 +205,4 @@ var renderPins = function (adsList, adsAmoutn) {
 
 var mapPins = document.querySelector('.map__pins');
 
-mapPins.appendChild(renderPins(ads, ADS_AMOUNT));
+mapPins.appendChild(renderPins(ads));
